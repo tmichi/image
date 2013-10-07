@@ -1,0 +1,127 @@
+﻿\documentclass[11pt]{jsarticle}
+\setlength{\textwidth}{\fullwidth}
+\addtolength{\textheight}{\topskip}
+\setlength{\voffset}{-0.5in}
+\setlength{\headsep}{0.3in}
+\usepackage[dvipdfm]{graphicx}
+\usepackage{txfonts, times, ascmac, subfigure, listings}
+\usepackage[dvipdfm]{ color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\ttfamily\scriptsize,
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=lines,                     % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=10pt,                  % how far the line-numbers are from the code
+  numberstyle=\ttfamily\scriptsize,     % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=4                       % sets default tabsize to 2 spaces
+  %title=none                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\title{{\gt 画像処理によるC++入門}}
+\author{道川 隆士 (michi@den.rcast.u-tokyo.ac.jp)}
+\begin{document}
+\maketitle
+\section{はじめに}
+本文書は．画像処理を題材にC++プログラムの作成法について学習する教材であ
+る．画像処理を題材として選んだのは，計算結果を画像として確認できるため
+であり，文字列で''Hello World''と打つよりは動機付けになると考えたためで
+ある．一部学生の要望に応じてJavaによるサンプルコードも同梱している．
+
+本文書の目標は，大きく分けて２つある．１つは，C++のクラスを利用したプロ
+グラムをかけるようになることである．C++は，その仕様の複雑さから，学習自
+体が面倒なものであった．しかし，標準的なデータ構造を定義したStandard
+Template Library (STL)や，線形代数ライブラリのEigenなど，開発の生産性を
+向上させるような便利なライブラリが提供されている現状を考えると，C++
+を利用する術を知っておくことは有益である．もう一つは，簡単な画像処理ア
+ルゴリズムを理解できるようになることである．画像処理は身近になっている
+ため，PhotoshopやGIMPを使えばすぐに所望の結果が得られる．また，プログラ
+ム開発についてもオープンソースのライブラリ（例えばOpenCVなど）を利用す
+れば，有名な画像処理アルゴリズムは，数行でかける場合が多い．本文書では，
+あえて１から書くことで画像処理のアルゴリズムを身をもって理解することを
+目指す．
+
+\subsection{ソースコードのダウンロード}
+ソースコードは，githubのリポジトリで管理している．URLは以下の通りである．
+\begin{itemize}
+\item https://github.com/tmichi/image
+\end{itemize}
+
+\section{サンプルファイル}
+サンプルファイルは，図\ref{fig:init0}に示すようなBMP画像の各画素の値を反転させるプログラムが入っている．
+
+\begin{figure}[h]
+\centering
+\subfigure[入力画像]{\includegraphics[bb=0 0 320 240, width=.4\linewidth]{sample.bmp}}
+\subfigure[計算結果]{\includegraphics[bb=0 0 320 240, width=.4\linewidth]{negate.bmp}}
+\label{fig:init0}
+\caption{画素値反転プログラム}
+\end{figure}
+
+\section{サンプルファイルのコンパイル}
+\subsection{C++}
+C++のソースコードは，cpp/フォルダに格納されている．g++等のコンパイラが使用できる場合，以下でコンパイルおよび実行確認できる．
+\begin{screen}
+\begin{verbatim}
+$ g++ -O3 -Wall -o sample main.cpp 
+$ ./sample -i sample.bmp -o negate.bmp
+\end{verbatim}
+\end{screen}
+ただし，-iオプションには入力ファイル名，-oオプションには出力をそれぞれ与える．
+フォルダ内で，編集するファイルは，main.cppのみである．以下に，main.cppと簡単な説明を示す．
+\lstinputlisting[language=C++, firstline=1, lastline=28]{../cpp/main.cpp}
+\begin{itemize}
+\item 1行目: Cの場合は，stdlib.hであるが，C++の場合は，cstdlibと書いた方がよい．
+\item 2-3行目: 画像を扱うクラスとオプション(-iなど）を処理する関数が格納されている．
+\item 6-7行目: 引数から文字列を取り出す関数．1,2個目の引数は，main関数
+  の引数であるargc, argvをそのまま入れる．3個目の引数は，オプションの
+  キー，4個目の引数はデフォルトの値である．数字を取り出したい場合は，
+  getOptInt( int argc, char* argv, char* key, int defaultValue) を使う．
+  詳しくは，Option.hを参照のこと．
+\item 9行目: 画像格納クラス（大雑把にいうと構造体に関数がくっついたもの）．この時はサイズは0 x 0であり、空の状態である．
+\item 10行目:BMPファイルから画像を読み込む．引数にはファイル名を与える．bool型(true かfalse)を返す．失敗した場合，falseを返すので，その場合は，EXIT\_FAILURE(cstdlibで定義されている)を返す．
+\item 11-12行目: 画像の幅(width)と高さ(height)を取得する．int の前にあるconstは，変更を許可しないという意味の修飾子である．例えば，13行目以降で， width = 0 と書くとコンパイルエラーを起こす．予期せぬ変更を防ぐ点で有用である．
+\item 14行目: サイズを指定した画像オブジェクトの作成．この場合は，width x heightのサイズで初期化されている．
+\item 18行目: inImage.getPixel(x,y) で(x,y)におけるピクセルの値を取得．Pixelは画素値(RGB)をもっているクラスである．
+\item 19-21 行目: p.getR(), p.getG(), p.getB()で画素のRGB成分を取得．それぞれの最大値は255である．
+\item 22行目: RGB値をピクセルにセットする．
+\item 23行目: 22行目で作成したピクセルを画像にセットする．
+\item 26行目: 画像を保存する．
+\item 27行目: 成功したという値(EXIT\_SUCCESS) を返す．
+\end{itemize}
+
+以上に示す通り，基本的な処理は，ピクセルの色情報を画像から取得，各画素の取得，各画素をピクセルにセット，ピクセルを画像にセットという段階を経て行う．例えば，ピクセル処理は，19-21行目を編集すればよい．
+\subsubsection{Javaの場合}
+Javaの場合のコンパイルと実行は以下の通り行う．
+\begin{screen}
+\begin{verbatim}
+$ javac ImageProcessingSample.java
+$ java ImageProcessingSample sample.bmp negate.bmp
+\end{verbatim}
+\end{screen}
+Javaのコードは，javaフォルダ内にある．
+フォルダ内で編集するファイルは，ImageProcessingSample.javaのみである．以下に，ImageProcessingSample.javaを示す．説明は省略するが，基本的な構造はC++と同じである．
+\clearpage
+\lstinputlisting[language=Java, firstline=1, lastline=63]{../Java/ImageProcessingSample.java}
+\end{document}
+

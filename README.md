@@ -4,11 +4,11 @@ C++またはJavaプログラムの書き方について，画像処理を題材�
 
 ダウンロード
 -----
-- https://github.com/tmichi/image/archive/1.1.0.zip
+- https://github.com/tmichi/image
 
 コンパイル
 -----
-各フォルダのREADME.txtを参照のこと．
+doc/ip_intro.pdfを参照のこと．
 
 課題
 -----

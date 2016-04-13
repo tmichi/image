@@ -7,7 +7,7 @@ C++またはJavaプログラムの書き方について，画像処理を題材�
 
 ダウンロード
 -----
-- https://github.com/tmichi/image/releases/tag/1.1.1
+- https://github.com/tmichi/image/releases/tag/v.20160413
 
 コンパイル
 -----

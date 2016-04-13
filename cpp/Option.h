@@ -1,7 +1,11 @@
 #ifndef __OPTION_H__
 #define __OPTION_H__ 1
 #include <cstdlib>
+//#ifdef __CYGWIN__
+#include <cstring>
+//#else
 #include <string>
+//#endif
 bool isKeyExisted ( int argc, char** argv, std::string key )
 {
         for ( int i = 1 ; i < argc ; i++ ) {

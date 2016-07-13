@@ -20,3 +20,35 @@ doc/ip_intro.pdfを参照のこと．
 - ガウスフィルタをかけるプログラムを作成すること．
 - 画像をθ分だけ回転させるプログラムを作成すること．ただしθは，引数で与えるものとする．また，元画像は，はみ出ないようにすること．
 - 白黒画像を連結成分でラベリングするプログラムを作成すること．
+
+Minimum codes for studying image processing in C++ and Java
+=====
+
+Objective
+-----
+The objective of this codes is learn how to write C++ or Java codes using sample image processing codes. 
+Since our laboratory uses CT images, I believe this code will be a good example for programming rather than "Hello world"-like codes. 
+
+Download
+-----
+- https://github.com/tmichi/image/releases/tag/v.20160413
+
+Build and Run
+-----
+C++ code 
+$ g++ -O3 -Wall -o sample main.cpp
+$ ./sample -i sample.bmp -o negate.bmp
+
+Java
+$ javac ImageProcessingSample.java
+$ java ImageProcessingSample sample.bmp negate.bmp
+
+
+Assignments 
+-----
+
+- Implement Gaussian filter. 
+- Implement Rotation of images. Rotation angle must be given in runtime, and the rotated images must be changed so that all pixels are drawn in the image. 
+- Implement connected component labelling of binary images. 
+
+Ask google if unknown words are found. 

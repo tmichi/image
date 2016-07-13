@@ -35,14 +35,7 @@ Download
 
 Build and Run
 -----
-C++ code 
-$ g++ -O3 -Wall -o sample main.cpp
-$ ./sample -i sample.bmp -o negate.bmp
-
-Java
-$ javac ImageProcessingSample.java
-$ java ImageProcessingSample sample.bmp negate.bmp
-
+See cpp/README.txt or java/README.txt.
 
 Assignments 
 -----
